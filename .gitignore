@@ -1,0 +1,19 @@
+# Gradle files
+.gradle/
+build/
+**/build/
+
+# Android Studio
+.idea/
+*.iml
+local.properties
+
+# Keystore files
+*.jks
+*.keystore
+
+# Generated files
+app/src/main/assets/
+
+# LeakCanary results
+*.hprof
