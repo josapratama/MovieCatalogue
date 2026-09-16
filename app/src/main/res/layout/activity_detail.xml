@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/colorBackground"
     tools:context=".presentation.detail.DetailActivity">
 
     <com.google.android.material.appbar.AppBarLayout
@@ -101,7 +100,7 @@
                         android:textStyle="bold"
                         tools:text="Movie Title" />
 
-                    <!-- Rating row -->
+                    <!-- Rating row — compound drawable replaces LinearLayout+ImageView -->
                     <LinearLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -109,17 +108,13 @@
                         android:gravity="center_vertical"
                         android:orientation="horizontal">
 
-                        <ImageView
-                            android:layout_width="18dp"
-                            android:layout_height="18dp"
-                            android:contentDescription="@string/rating"
-                            android:src="@drawable/ic_star" />
-
                         <TextView
                             android:id="@+id/tv_rating"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
+                            android:drawableStart="@drawable/ic_star"
+                            android:drawablePadding="4dp"
+                            android:gravity="center_vertical"
                             android:textColor="@color/colorOnSurface"
                             android:textSize="14sp"
                             android:textStyle="bold"
@@ -136,31 +131,18 @@
 
                     </LinearLayout>
 
-                    <!-- Release Date -->
-                    <LinearLayout
-                        android:layout_width="match_parent"
+                    <!-- Release Date — compound drawable replaces LinearLayout+ImageView -->
+                    <TextView
+                        android:id="@+id/tv_release_date"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="8dp"
+                        android:drawableStart="@drawable/ic_calendar"
+                        android:drawablePadding="4dp"
                         android:gravity="center_vertical"
-                        android:orientation="horizontal">
-
-                        <ImageView
-                            android:layout_width="14dp"
-                            android:layout_height="14dp"
-                            android:contentDescription="@string/release_date"
-                            android:src="@drawable/ic_calendar"
-                            app:tint="@color/colorOnSurfaceVariant" />
-
-                        <TextView
-                            android:id="@+id/tv_release_date"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="4dp"
-                            android:textColor="@color/colorOnSurfaceVariant"
-                            android:textSize="12sp"
-                            tools:text="2024-01-01" />
-
-                    </LinearLayout>
+                        android:textColor="@color/colorOnSurfaceVariant"
+                        android:textSize="12sp"
+                        tools:text="2024-01-01" />
 
                     <!-- Language badge -->
                     <TextView

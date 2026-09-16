@@ -43,57 +43,32 @@
                 android:textStyle="bold"
                 tools:text="Movie Title" />
 
-            <!-- Rating -->
-            <LinearLayout
+            <!-- Rating — compound drawable replaces LinearLayout+ImageView -->
+            <TextView
+                android:id="@+id/tv_movie_rating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="6dp"
+                android:drawableStart="@drawable/ic_star"
+                android:drawablePadding="4dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:textColor="@color/colorOnSurface"
+                android:textSize="13sp"
+                android:textStyle="bold"
+                tools:text="8.5" />
 
-                <ImageView
-                    android:layout_width="14dp"
-                    android:layout_height="14dp"
-                    android:contentDescription="@string/rating"
-                    android:src="@drawable/ic_star" />
-
-                <TextView
-                    android:id="@+id/tv_movie_rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textColor="@color/colorOnSurface"
-                    android:textSize="13sp"
-                    android:textStyle="bold"
-                    tools:text="8.5" />
-
-            </LinearLayout>
-
-            <!-- Release date -->
-            <LinearLayout
+            <!-- Release date — compound drawable replaces LinearLayout+ImageView -->
+            <TextView
+                android:id="@+id/tv_release_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:drawableStart="@drawable/ic_calendar"
+                android:drawablePadding="4dp"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="13dp"
-                    android:layout_height="13dp"
-                    android:contentDescription="@string/release_date"
-                    android:src="@drawable/ic_calendar"
-                    app:tint="@color/colorOnSurfaceVariant" />
-
-                <TextView
-                    android:id="@+id/tv_release_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="4dp"
-                    android:textColor="@color/colorOnSurfaceVariant"
-                    android:textSize="12sp"
-                    tools:text="2024-01-01" />
-
-            </LinearLayout>
+                android:textColor="@color/colorOnSurfaceVariant"
+                android:textSize="12sp"
+                tools:text="2024-01-01" />
 
             <!-- Language badge -->
             <TextView

@@ -35,6 +35,18 @@ class DetailActivity : AppCompatActivity() {
             return
         }
 
+        // Set FAB click listener once — uses ViewModel state, no Activity closure capture
+        binding.fabFavorite.setOnClickListener {
+            val currentFavorite = viewModel.domainMovie.value?.isFavorite ?: return@setOnClickListener
+            val newFavoriteState = !currentFavorite
+            viewModel.setFavoriteMovie(newFavoriteState)
+            val msg = if (newFavoriteState)
+                getString(com.dicoding.moviecatalogue.core.R.string.added_to_favorite)
+            else
+                getString(com.dicoding.moviecatalogue.core.R.string.removed_from_favorite)
+            Toast.makeText(this, msg, Toast.LENGTH_SHORT).show()
+        }
+
         observeMovieDetail(movieId)
         observeDomainMovie()
     }
@@ -57,9 +69,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun observeDomainMovie() {
         viewModel.domainMovie.observe(this) { movie ->
-            movie?.let {
-                updateFavoriteButton(it.isFavorite)
-            }
+            movie?.let { updateFavoriteButton(it.isFavorite) }
         }
     }
 
@@ -85,17 +95,6 @@ class DetailActivity : AppCompatActivity() {
             }
 
             updateFavoriteButton(movie.isFavorite)
-
-            fabFavorite.setOnClickListener {
-                val currentFavorite = viewModel.domainMovie.value?.isFavorite ?: movie.isFavorite
-                val newFavoriteState = !currentFavorite
-                viewModel.setFavoriteMovie(newFavoriteState)
-                val msg = if (newFavoriteState)
-                    getString(com.dicoding.moviecatalogue.core.R.string.added_to_favorite)
-                else
-                    getString(com.dicoding.moviecatalogue.core.R.string.removed_from_favorite)
-                Toast.makeText(this@DetailActivity, msg, Toast.LENGTH_SHORT).show()
-            }
         }
     }
 

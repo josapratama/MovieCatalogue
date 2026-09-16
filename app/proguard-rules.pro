@@ -6,6 +6,12 @@
 -keep class com.dicoding.moviecatalogue.MainActivity { *; }
 -keep class com.dicoding.moviecatalogue.MyApplication { *; }
 
+# ========== LeakCanary (debug only — keep for readable leak reports) ==========
+-keep class com.squareup.leakcanary.** { *; }
+-keep class shark.** { *; }
+-dontwarn com.squareup.leakcanary.**
+-dontwarn shark.**
+
 # ========== Kotlin ==========
 -keep class kotlin.** { *; }
 -keep class kotlin.Metadata { *; }
