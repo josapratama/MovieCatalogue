@@ -12,7 +12,8 @@
 
 ### ✅ 1. Continuous Integration (GitHub Actions)
 
-**File:** `.github/workflows/android.yml`
+**File:** `.github/workflows/android.yml`  
+**Link CI:** https://github.com/josapratama/MovieCatalogue/actions
 
 Pipeline terdiri dari 3 job:
 
@@ -20,7 +21,7 @@ Pipeline terdiri dari 3 job:
 - **build** (depends on `test`) — Membangun debug APK dengan `./gradlew assembleDebug`, mengupload artefak APK
 - **lint** — Menjalankan `./gradlew :app:lintDebug :core:lintDebug`, mengupload laporan HTML
 
-CI berjalan otomatis pada setiap `push` dan `pull_request` ke branch `main`/`master`.
+CI berjalan otomatis pada setiap `push` dan `pull_request` ke branch `main`/`master`. Status terakhir: ✅ **Success** (run #3).
 
 ---
 
@@ -42,9 +43,10 @@ LeakCanary diinisialisasi otomatis melalui `ContentProvider` pada build debug �
 
 **Lokasi:** `app/proguard-rules.pro`, `core/proguard-rules.pro`, `core/consumer-rules.pro`
 
-- `minifyEnabled true` aktif di `buildTypes.release` pada modul `app` dan `core`
+- `minifyEnabled true` aktif di **debug dan release** buildType pada modul `app`
+- `minifyEnabled true` aktif di **release** buildType pada modul `core` (library module tidak minify di debug karena tidak punya android.jar lengkap)
 - `app/proguard-rules.pro`: Hanya mem-preserve kelas Presentation Layer dan DI, tidak lagi memakai `-keep class com.dicoding.moviecatalogue.** { *; }` yang terlalu luas
-- Rules lengkap untuk semua library: Retrofit, OkHttp, Gson, Room, SQLCipher, Koin, Coil, Kotlin Coroutines, AndroidX
+- Rules lengkap untuk semua library: Retrofit, OkHttp, Gson, Room, SQLCipher, Koin, Coil, Kotlin Coroutines, AndroidX, LeakCanary/Shark
 
 #### b. Enkripsi Database dengan SQLCipher
 
