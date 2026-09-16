@@ -21,12 +21,12 @@ android {
     buildTypes {
         debug {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
-            // LeakCanary needs source names for readable stack traces
-            // and its own classes must not be stripped
         }
         release {
             minifyEnabled true
+            shrinkResources true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

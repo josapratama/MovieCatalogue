@@ -20,7 +20,10 @@ class HomeFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: HomeViewModel by viewModel()
-    private lateinit var movieAdapter: MovieAdapter
+
+    // Keep adapter as a nullable field so we can null it out in onDestroyView,
+    // breaking the reference chain: RecyclerView → Adapter → click lambda → Fragment
+    private var movieAdapter: MovieAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,7 +65,7 @@ class HomeFragment : Fragment() {
                         showEmpty(true)
                     } else {
                         showEmpty(false)
-                        movieAdapter.submitList(movies)
+                        movieAdapter?.submitList(movies)
                     }
                 }
                 is Resource.Error -> {
@@ -98,6 +101,14 @@ class HomeFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        // Null out the adapter before nulling the binding.
+        // This breaks the reference chain:
+        //   RecyclerView → Adapter → ViewHolder → click lambda → Fragment context
+        // Without this, the RecyclerView's RecycledViewPool holds onto the Adapter,
+        // which holds the lambda, which captures the Fragment — causing the leak
+        // reported by LeakCanary (ZipOfWithArg3ListArray → RecyclerView.Adapter).
+        binding.rvMovies.adapter = null
+        movieAdapter = null
         _binding = null
     }
 }

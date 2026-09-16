@@ -21,7 +21,9 @@ class SearchFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: SearchViewModel by viewModel()
-    private lateinit var movieAdapter: MovieAdapter
+
+    // Nullable to break RecyclerView → Adapter → lambda → Fragment leak chain
+    private var movieAdapter: MovieAdapter? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -70,7 +72,7 @@ class SearchFragment : Fragment() {
                         showEmpty(true)
                     } else {
                         showEmpty(false)
-                        movieAdapter.submitList(movies)
+                        movieAdapter?.submitList(movies)
                     }
                 }
                 is Resource.Error -> {
@@ -94,6 +96,8 @@ class SearchFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvSearchResults.adapter = null
+        movieAdapter = null
         _binding = null
     }
 }

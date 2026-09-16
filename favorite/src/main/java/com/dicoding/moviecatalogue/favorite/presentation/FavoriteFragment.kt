@@ -20,16 +20,13 @@ class FavoriteFragment : Fragment() {
     private var _binding: FragmentFavoriteBinding? = null
     private val binding get() = _binding!!
 
-    // by viewModel() is lazy — only resolved when first accessed (in onViewCreated),
-    // which is always after onAttach() where the module is guaranteed to be loaded.
     private val viewModel: FavoriteViewModel by viewModel()
 
-    private lateinit var movieAdapter: MovieAdapter
+    // Nullable to break RecyclerView → Adapter → lambda → Fragment leak chain
+    private var movieAdapter: MovieAdapter? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        // Load the Koin module once before the fragment lifecycle proceeds.
-        // This must happen before viewModel delegate is first accessed.
         if (!moduleLoaded) {
             loadKoinModules(favoriteModule)
             moduleLoaded = true
@@ -71,7 +68,7 @@ class FavoriteFragment : Fragment() {
                 showEmpty(true)
             } else {
                 showEmpty(false)
-                movieAdapter.submitList(movies)
+                movieAdapter?.submitList(movies)
             }
         }
     }
@@ -83,6 +80,8 @@ class FavoriteFragment : Fragment() {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        binding.rvFavorites.adapter = null
+        movieAdapter = null
         _binding = null
     }
 
