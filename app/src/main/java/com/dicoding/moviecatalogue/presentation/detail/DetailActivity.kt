@@ -26,8 +26,12 @@ class DetailActivity : AppCompatActivity() {
         binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        setSupportActionBar(binding.toolbar)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        // Use toolbar navigation listener directly — avoids setSupportActionBar/
+        // setDisplayHomeAsUpEnabled which retains a reference to the Activity
+        // through ActionBarDrawerToggle and causes a memory leak detected by LeakCanary.
+        binding.toolbar.setNavigationOnClickListener {
+            onBackPressedDispatcher.onBackPressed()
+        }
 
         val movieId = intent.getIntExtra(EXTRA_MOVIE_ID, -1)
         if (movieId == -1) {
@@ -35,9 +39,11 @@ class DetailActivity : AppCompatActivity() {
             return
         }
 
-        // Set FAB click listener once — uses ViewModel state, no Activity closure capture
+        // Set FAB click listener once in onCreate — reads ViewModel state directly,
+        // no re-registration on data updates (prevents listener accumulation leak).
         binding.fabFavorite.setOnClickListener {
-            val currentFavorite = viewModel.domainMovie.value?.isFavorite ?: return@setOnClickListener
+            val currentFavorite = viewModel.domainMovie.value?.isFavorite
+                ?: return@setOnClickListener
             val newFavoriteState = !currentFavorite
             viewModel.setFavoriteMovie(newFavoriteState)
             val msg = if (newFavoriteState)
@@ -106,10 +112,5 @@ class DetailActivity : AppCompatActivity() {
     private fun showLoading(isLoading: Boolean) {
         binding.progressBar.visibility = if (isLoading) View.VISIBLE else View.GONE
         binding.contentLayout.visibility = if (isLoading) View.GONE else View.VISIBLE
-    }
-
-    override fun onSupportNavigateUp(): Boolean {
-        onBackPressedDispatcher.onBackPressed()
-        return true
     }
 }
