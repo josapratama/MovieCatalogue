@@ -49,7 +49,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="32dp"
         android:text="@string/no_search_results"
-        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+        android:textAppearance="?attr/textAppearanceBodyMedium"
         android:visibility="gone"
         tools:visibility="visible" />
 
